@@ -7,15 +7,20 @@ RUN \
   tar xvzf elasticsearch-1.3.2.tar.gz && \
   rm -f elasticsearch-1.3.2.tar.gz && \
   mv /tmp/elasticsearch-1.3.2 /elasticsearch
+# Install supervisor
+RUN apt-get install -y supervisor
 
 # Define mountable directories.
 VOLUME ["/data"]
 
-# Mount elasticsearch.yml config
+# ADD elasticsearch.yml config
 ADD config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml
+# ADD supervisord
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD run.sh /run.sh
+ADD startNode.sh /startNode.sh
 
-RUN chmod 0755 /run.sh
+RUN chmod 0755 /*.sh
 
 # Define working directory.
 WORKDIR /data
