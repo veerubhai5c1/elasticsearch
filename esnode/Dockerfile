@@ -1,4 +1,4 @@
-FROM registry.nirmata.com/nirmata/java7
+FROM java:7
 
 # Install ElasticSearch.
 RUN \
@@ -10,8 +10,15 @@ RUN \
 # Install supervisor
 RUN apt-get install -y supervisor
 
+# Get Kafka/river plugin
+RUN wget https://s3-us-west-1.amazonaws.com/nirmata-elasticsearch/elasticsearch-river-kafka-1.0.2-SNAPSHOT.zip > /tmp/elasticsearch-river-kafka-1.0.2-SNAPSHOT.zip
+RUN /elasticsearch/bin/plugin -remove elasticsearch-river-kafka
+# RUN mkdir /plugins/river-kafka/_site
+# RUN /elasticsearch/bin/plugin -url file:///tmp/elasticsearch-river-kafka-1.0.2-SNAPSHOT.zip -install elasticsearch-river-kafka
 # Define mountable directories.
 VOLUME ["/data"]
+# Define working directory.
+WORKDIR /data
 
 # ADD elasticsearch.yml config
 ADD config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml
@@ -19,7 +26,7 @@ ADD config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD run.sh /run.sh
 ADD startNode.sh /startNode.sh
-
+ADD plugin.sh /plugin.sh
 RUN chmod 0755 /*.sh
 
 # Define working directory.

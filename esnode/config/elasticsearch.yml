@@ -1,7 +1,7 @@
 #Cluster Name
 cluster.name: elasticsearch
 # Node Name
-node.name: veeresh
+node.name: NODE_NAME
 # Is Master node
 node.master: false
 # Is data node
@@ -16,4 +16,20 @@ path.plugins: /data/plugins
 path.work: /data/work
 # Disable dynamic scripting
 script.disable_dynamic: true
+# Network host for other nodes to connect
+network.bind_host: HOST_IP
+network.publish_host: PUBLISH_IP
+# TCP HOST
+# transport.host: HOST_IP_TCP
+transport.tcp.port: TCP_PORT
+# HTTP PORT
+http.port: HTTP_PORT
+# Enable unicast discovery or disable multicast
+discovery.zen.ping.multicast.enabled: false
+# Add hosts to discover
+discovery.zen.ping.unicast.hosts: DISCOVERY_STRING
 
+discovery.zen.fd.ping_interval: 5
+discovery.zen.fd.ping_timeout: 60
+discovery.zen.fd.ping_retries: 5
+discovery.zen.minimum_master_nodes: MINIMUM_MASTERS
